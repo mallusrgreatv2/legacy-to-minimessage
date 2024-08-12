@@ -1,41 +1,51 @@
 function convert(legacy, concise, char, rgb) {
-    miniMessage = legacy.replaceAll(char + "0", "<black>")
-        .replaceAll(char + "1", "<dark_blue>")
-        .replaceAll(char + "2", "<dark_green>")
-        .replaceAll(char + "3", "<dark_aqua>")
-        .replaceAll(char + "4", "<dark_red>")
-        .replaceAll(char + "5", "<dark_purple>")
-        .replaceAll(char + "6", "<gold>")
-        .replaceAll(char + "7", "<gray>")
-        .replaceAll(char + "8", "<dark_gray>")
-        .replaceAll(char + "9", "<blue>")
-        .replaceAll(char + "a", "<green>")
-        .replaceAll(char + "b", "<aqua>")
-        .replaceAll(char + "c", "<red>")
-        .replaceAll(char + "d", "<light_purple>")
-        .replaceAll(char + "e", "<yellow>")
-        .replaceAll(char + "f", "<white>");
-
-    if (concise) {
-        miniMessage = miniMessage.replaceAll(char + "n", "<u>")
-            .replaceAll(char + "m", "<st>")
-            .replaceAll(char + "k", "<obf>")
-            .replaceAll(char + "o", "<i>")
-            .replaceAll(char + "l", "<b>")
-            .replaceAll(char + "r", "<r>");
-    } else {
-        miniMessage = miniMessage.replaceAll(char + "n", "<underlined>")
-            .replaceAll(char + "m", "<strikethrough>")
-            .replaceAll(char + "k", "<obfuscated>")
-            .replaceAll(char + "o", "<italic>")
-            .replaceAll(char + "l", "<bold>")
-            .replaceAll(char + "r", "<reset>");
-    }
-
-    if (rgb) {
-        matcher = new RegExp(char + "#([0-9a-fA-F]{6})", "g");
-        miniMessage = miniMessage.replaceAll(matcher, "<#$1>");
-    }
+    miniMessage = legacy
+    .replaceAll(char + "0", "<black>")
+    .replaceAll(char + "1", "<dark_blue>")
+    .replaceAll(char + "2", "<dark_green>")
+    .replaceAll(char + "3", "<dark_aqua>")
+    .replaceAll(char + "4", "<dark_red>")
+    .replaceAll(char + "5", "<dark_purple>")
+    .replaceAll(char + "6", "<gold>")
+    .replaceAll(char + "7", "<gray>")
+    .replaceAll(char + "8", "<dark_gray>")
+    .replaceAll(char + "9", "<blue>")
+    .replaceAll(char + "a", "<green>")
+    .replaceAll(char + "b", "<aqua>")
+    .replaceAll(char + "c", "<red>")
+    .replaceAll(char + "d", "<light_purple>")
+    .replaceAll(char + "e", "<yellow>")
+    .replaceAll(char + "f", "<white>");
+  if (concise) {
+    miniMessage = miniMessage
+      .replaceAll(char + "n", "<u>")
+      .replaceAll(char + "m", "<st>")
+      .replaceAll(char + "k", "<obf>")
+      .replaceAll(char + "o", "<i>")
+      .replaceAll(char + "l", "<b>")
+      .replaceAll(char + "r", "<r>");
+  } else {
+    miniMessage = miniMessage
+      .replaceAll(char + "n", "<underlined>")
+      .replaceAll(char + "m", "<strikethrough>")
+      .replaceAll(char + "k", "<obfuscated>")
+      .replaceAll(char + "o", "<italic>")
+      .replaceAll(char + "l", "<bold>")
+      .replaceAll(char + "r", "<reset>");
+  }
+  if (rgb) {
+    matcher = new RegExp(char + "#([0-9a-fA-F]{6})", "g");
+    miniMessage = miniMessage.replaceAll(matcher, "<#$1>");
+    const colorCodePattern =
+      /§x§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])(.*?)(?=§x|$)/gi;
+    miniMessage = miniMessage.replace(
+      colorCodePattern,
+      (match, r1, r2, r3, r4, r5, r6, textAfter) => {
+        const color = `#${r1}${r2}${r3}${r4}${r5}${r6}`;
+        return `<${color}>${textAfter.trim()}`;
+      }
+    );
+  }
 
     return miniMessage;
 }
