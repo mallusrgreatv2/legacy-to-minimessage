@@ -34,8 +34,6 @@ function convert(legacy, concise, char, rgb) {
       .replaceAll(char + "r", "<reset>");
   }
   if (rgb) {
-    matcher = new RegExp(char + "#([0-9a-fA-F]{6})", "g");
-    miniMessage = miniMessage.replaceAll(matcher, "<#$1>");
     const colorCodePattern =
       /§x§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])(.*?)(?=§x|$)/gi;
     miniMessage = miniMessage.replace(
@@ -45,6 +43,8 @@ function convert(legacy, concise, char, rgb) {
         return `<${color}>${textAfter.trim()}`;
       }
     );
+    matcher = new RegExp(char + "#([0-9a-fA-F]{6})", "g");
+    miniMessage = miniMessage.replaceAll(matcher, "<#$1>");
   }
 
     return miniMessage;
