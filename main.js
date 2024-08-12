@@ -1,8 +1,8 @@
 function convert(legacy, concise, char, rgb) {
-let miniMessage = legacy;
+  let miniMessage = legacy;
   if (rgb) {
     const colorCodePattern =
-      /§x§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])(.*?)(?=§x|$)/gim;
+      new RegExp(`/${char}x${char}([a-f0-9])${char}([a-f0-9])${char}([a-f0-9])${char}([a-f0-9])${char}([a-f0-9])${char}([a-f0-9])(.*?)(?=${char}x|$)/gim`);
     miniMessage = miniMessage.replace(
       colorCodePattern,
       (match, r1, r2, r3, r4, r5, r6, textAfter) => {
