@@ -1,5 +1,19 @@
 function convert(legacy, concise, char, rgb) {
-    miniMessage = legacy
+  let miniMessage = "";
+  if (rgb) {
+    const colorCodePattern =
+      /§x§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])(.*?)(?=§x|$)/gim;
+    miniMessage = miniMessage.replace(
+      colorCodePattern,
+      (match, r1, r2, r3, r4, r5, r6, textAfter) => {
+        const color = `#${r1}${r2}${r3}${r4}${r5}${r6}`;
+        return `<${color}>${textAfter.trim()}`;
+      }
+    );
+    matcher = new RegExp(char + "#([0-9a-fA-F]{6})", "g");
+    miniMessage = miniMessage.replaceAll(matcher, "<#$1>");
+  }
+  miniMessage = legacy
     .replaceAll(char + "0", "<black>")
     .replaceAll(char + "1", "<dark_blue>")
     .replaceAll(char + "2", "<dark_green>")
@@ -33,21 +47,8 @@ function convert(legacy, concise, char, rgb) {
       .replaceAll(char + "l", "<bold>")
       .replaceAll(char + "r", "<reset>");
   }
-  if (rgb) {
-    const colorCodePattern =
-      /§x§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])§([a-f0-9])(.*?)(?=§x|$)/gi;
-    miniMessage = miniMessage.replace(
-      colorCodePattern,
-      (match, r1, r2, r3, r4, r5, r6, textAfter) => {
-        const color = `#${r1}${r2}${r3}${r4}${r5}${r6}`;
-        return `<${color}>${textAfter.trim()}`;
-      }
-    );
-    matcher = new RegExp(char + "#([0-9a-fA-F]{6})", "g");
-    miniMessage = miniMessage.replaceAll(matcher, "<#$1>");
-  }
 
-    return miniMessage;
+  return miniMessage;
 }
 
 function addConvertListener() {
