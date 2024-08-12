@@ -10,7 +10,6 @@ let miniMessage = legacy;
         return `<${color}>${textAfter.trim()}`;
       }
     );
-    return miniMessage;
     matcher = new RegExp(char + "#([0-9a-fA-F]{6})", "g");
     miniMessage = miniMessage.replaceAll(matcher, "<#$1>");
   }
